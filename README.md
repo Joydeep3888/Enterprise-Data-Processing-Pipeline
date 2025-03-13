@@ -1,79 +1,119 @@
-Here's an updated **GitHub-style README** that reflects **PySpark-based transformations** in your ETL pipeline.  
+## 📌 Enterprise Data Processing Pipeline (PySpark)  
+
+### 🔍 Overview  
+The **Enterprise Data Processing Pipeline** is a scalable **ETL (Extract, Transform, Load) pipeline** built using **AWS S3, PySpark, and MySQL**. It automates data ingestion, transformation, and loading for analytical use cases, focusing on **insurance claim processing**.  
+
+### 🚀 Features  
+✅ **Automated Data Ingestion**: Extracts insurance data from CSV files stored in AWS S3.  
+✅ **PySpark-based Transformations**: Categorization, risk assessment, and aggregations.  
+✅ **Database Integration**: Stores processed data in **MySQL Workbench**.  
+✅ **Cloud-Native**: Uses AWS S3 and PySpark for efficient large-scale processing.  
 
 ---
 
-# Enterprise Data Processing Pipeline (PySpark)  
+## 📊 Architecture  
 
-## Overview  
-The **Enterprise Data Processing Pipeline** is a scalable **ETL (Extract, Transform, Load) pipeline** built using **AWS S3, PySpark, and PostgreSQL**. This pipeline automates data ingestion, transformation, and loading for analytical use cases.  
+This pipeline follows a structured **ETL workflow**:
 
-## Features  
-- **Automated Data Ingestion**: Extracts raw data from AWS S3.  
-- **Data Transformation with PySpark**: Cleansing, filtering, aggregations, and schema enforcement.  
-- **Database Integration**: Stores processed data in PostgreSQL.  
-- **Cloud-Native**: Utilizes AWS services for efficient data processing.  
+1️⃣ **Data Ingestion**: Raw insurance data is uploaded to AWS S3.  
+2️⃣ **Data Extraction**: PySpark reads the data from **CSV files**.  
+3️⃣ **Data Transformation**:  
+   - **Age Group Categorization**: Young, Middle-aged, Senior  
+   - **Policy Duration Calculation**  
+   - **Risk Scoring**: Based on claim status  
+   - **Aggregations**: Average premium, total claims, total premium  
+4️⃣ **Data Loading**: Transformed data is stored in **MySQL Workbench** for analysis.  
 
-## Architecture  
-This pipeline follows a structured **ETL workflow**:  
-
-1. **Data Ingestion**: Raw data is uploaded to AWS S3.  
-2. **Data Extraction**: PySpark reads the data from S3.  
-3. **Data Transformation**:  
-   - Cleansing missing/invalid data  
-   - Standardizing schema  
-   - Aggregating and filtering data  
-4. **Data Loading**: The transformed data is stored in **PostgreSQL**.  
-
-### High-Level Flow  
-```plaintext  
-[S3 (Raw Zone)] → [Extract Data with PySpark] → [Transform Data with PySpark] → [Load into PostgreSQL]  
+### 🛠 High-Level Flow  
+```plaintext
+[S3 (Raw Data)] → [Extract with PySpark] → [Transform Data] → [Load into MySQL]
 ```
 
-## Technology Stack  
-- **AWS S3** – Cloud storage for raw and processed data.  
-- **PySpark** – Data transformation and processing.  
-- **PostgreSQL** – Structured data storage.  
-- **Boto3** – AWS SDK for Python to interact with S3.  
+---
 
-## Setup Instructions  
+## 🏗 Technology Stack  
 
-### 1. Prerequisites  
+| Technology | Purpose |
+|------------|---------|
+| **AWS S3** | Cloud storage for raw and processed data |
+| **PySpark** | Data transformation and processing |
+| **MySQL** | Structured data storage |
+| **Boto3** | AWS SDK for Python (S3 interactions) |
+
+---
+
+## 🛠 Setup Instructions  
+
+### 1️⃣ Prerequisites  
 Ensure you have the following installed:  
-- Python 3.x  
-- Apache Spark (PySpark)  
-- PostgreSQL  
-- AWS CLI configured with credentials  
+- **Python 3.x**  
+- **Apache Spark (PySpark)**  
+- **MySQL Workbench**  
+- **AWS CLI** configured with credentials  
 
-### 2. Clone the Repository  
+### 2️⃣ Clone the Repository  
 ```sh
 git clone https://github.com/joydeep-ghosh/enterprise-data-pipeline.git  
 cd enterprise-data-pipeline  
 ```
 
-### 3. Install Dependencies  
+### 3️⃣ Install Dependencies  
 ```sh
-pip install boto3 pyspark psycopg2 sqlalchemy  
+pip install boto3 pyspark mysql-connector-python  
 ```
 
-### 4. Configure Environment Variables  
-Update `config.py` with your AWS credentials and database details.  
+### 4️⃣ Configure AWS & MySQL  
+- Update `config.py` with your **AWS credentials** and **MySQL connection details**.
 
-### 5. Run the ETL Pipeline  
+### 5️⃣ Run the ETL Pipeline  
 ```sh
 python etl_pipeline.py  
 ```
 
-## Sample Data  
-| id | name  | age | city       | age_group |  
-|----|-------|-----|------------|-----------|  
-| 1  | Alice  | 25  | New York   | 20s       |  
-| 2  | Bob    | 30  | Los Angeles | 30s       |  
+---
 
-## Future Enhancements  
-- Real-time data streaming using Kafka  
-- Advanced data quality checks  
-- Incremental data processing  
+## 📌 Data Schema  
+
+### 🔹 **Raw Data (CSV Format)**
+| id | name  | age | state       | issue_date | claim_status | premium_amount |
+|----|-------|-----|------------|------------|--------------|---------------|
+| 1  | Alice  | 25  | New York   | 2020-05-12 | Approved     | 450.00        |
+| 2  | Bob    | 45  | California | 2018-09-23 | Denied       | 320.00        |
+
+### 🔹 **Transformed Data (Stored in MySQL)**  
+```sql
+CREATE TABLE processed_insurance_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    age INT,
+    state VARCHAR(255),
+    issue_date DATE,
+    claim_status VARCHAR(50),
+    premium_amount FLOAT,
+    age_group VARCHAR(50),
+    policy_duration INT,
+    risk_score INT,
+    avg_premium FLOAT,
+    total_claims INT,
+    total_premium FLOAT
+);
+```
+
+### 🔹 **Processed Data Sample**
+| id | name  | age | state       | issue_date | claim_status | premium_amount | age_group | policy_duration | risk_score | avg_premium | total_claims | total_premium |
+|----|-------|-----|------------|------------|--------------|---------------|-----------|----------------|------------|-------------|--------------|---------------|
+| 1  | Alice  | 25  | New York   | 2020-05-12 | Approved     | 450.00        | Young     | 5 years       | 3          | 400.00      | 120          | 54000.00      |
+| 2  | Bob    | 45  | California | 2018-09-23 | Denied       | 320.00        | Middle-aged | 7 years     | 1          | 350.00      | 80           | 28000.00      |
 
 ---
 
-Let me know if you need any changes! 🚀
+## 📌 Future Enhancements  
+🔹 Real-time data streaming using **Kafka**  
+🔹 Incremental data processing for optimized performance  
+🔹 Advanced data quality checks  
+
+---
+
+💡 **Contributions & Feedback**  
+Feel free to **open issues** or **submit PRs** to enhance the project. 🚀
+
