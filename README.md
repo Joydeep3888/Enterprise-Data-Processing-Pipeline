@@ -53,7 +53,7 @@ Ensure you have the following installed:
 
 ### 2️⃣ Clone the Repository  
 ```sh
-git clone https://github.com/joydeep-ghosh/enterprise-data-pipeline.git  
+git clone   https://github.com/Joydeep3888/Enterprise-Data-Processing-Pipeline.git
 cd enterprise-data-pipeline  
 ```
 
@@ -196,8 +196,6 @@ VALUES
   - Average premium across all policies is **~$2550**.  
   - Highest policy claims observed in **California** and **New York**.  
 
-
-This markdown-formatted report ensures readability on **GitHub**, **Notion**, or any documentation platform. Let me know if you need any modifications! 🚀
 
  <img width="621" alt="image" src="https://github.com/user-attachments/assets/22c051d5-5015-47fc-9d5f-7f4af7ceac85" />
 
