@@ -1,3 +1,95 @@
+hi
+New Business
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_agreement_t but not in coverage_d, set NEW_COVERAGE_FLAG = 'Y' and proceed to Step 2.
+If no match, skip the record.
+Step 2: Check if IFRS17_CONTRACT_ID exists in IFRS17_CONTRACT_D.
+If no match:
+MOVEMENT_CODE = 'ON'
+MOVEMENT_TYPE_TEXT = 'New Business'
+TRANSACTION_TYPE_TEXT = 'New Issue'
+TRANSACTION_CODE = 4
+Else: Set all movement fields to NULL.
+Death
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_d but not in coverage_agreement_t, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE = 'D':
+MOVEMENT_CODE = 'OFF'
+MOVEMENT_TYPE_TEXT = 'Death'
+TRANSACTION_TYPE_TEXT = 'Death (both lives for joint policies)'
+TRANSACTION_CODE = 1
+NEW_COVERAGE_FLAG = NULL
+Lapse
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_d but not in coverage_agreement_t, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE = 'B':
+MOVEMENT_CODE = 'OFF'
+MOVEMENT_TYPE_TEXT = 'Lapse'
+TRANSACTION_TYPE_TEXT = 'Lapse (including surrenders)'
+TRANSACTION_CODE = 2
+NEW_COVERAGE_FLAG = NULL
+Surrendered
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_d but not in coverage_agreement_t, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE = 'E':
+MOVEMENT_CODE = 'OFF'
+MOVEMENT_TYPE_TEXT = 'Surrendered'
+TRANSACTION_TYPE_TEXT = 'Lapse (including surrenders)'
+TRANSACTION_CODE = 2
+NEW_COVERAGE_FLAG = NULL
+Morbidity (Decrementing)
+Step 1: Compare inforce records between current and previous quarters.
+If a base coverage record exists in the previous quarter but not in the current quarter, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE IN ('J', '5'):
+MOVEMENT_CODE = 'OFF'
+MOVEMENT_TYPE_TEXT = 'Morbidity (decrementing)'
+TRANSACTION_TYPE_TEXT = 'Other Benefit (with decrement)'
+TRANSACTION_CODE = 3
+NEW_COVERAGE_FLAG = NULL
+Not Taken
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_d but not in coverage_agreement_t, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE = 'A':
+MOVEMENT_CODE = 'OFF'
+MOVEMENT_TYPE_TEXT = 'Not Taken'
+TRANSACTION_TYPE_TEXT = 'Calendar Month End Misc. Off'
+TRANSACTION_CODE = 22
+NEW_COVERAGE_FLAG = NULL
+Other Offs
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_d but not in coverage_agreement_t, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE IN ('1', '2', '3', '4', 'M', 'P', 'R', 'T', 'W', 'X'):
+MOVEMENT_CODE = 'OFF'
+MOVEMENT_TYPE_TEXT = 'Other Offs'
+TRANSACTION_TYPE_TEXT = 'Calendar Month End Misc. Off'
+TRANSACTION_CODE = 22
+NEW_COVERAGE_FLAG = NULL
+Reinstatement
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_agreement_t but not in coverage_d, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE IN ('B', 'E', 'A'):
+MOVEMENT_CODE = 'ON'
+MOVEMENT_TYPE_TEXT = 'Reinstatement'
+TRANSACTION_TYPE_TEXT = 'Calendar Month End Misc. On'
+TRANSACTION_CODE = 23
+NEW_COVERAGE_FLAG = NULL
+Other Ons
+Step 1: Compare inforce records between current and previous quarters.
+If a record exists in coverage_agreement_t but not in coverage_d, proceed to Step 2.
+If no match, skip the record.
+Step 2: If STATUS_CODE IN ('1', '2', '3', '4', '5', 'D', 'F', 'H', 'J', 'M', 'R', 'T', 'W', 'X'):
+MOVEMENT_CODE = 'ON'
+MOVEMENT_TYPE_TEXT = 'Other Ons'
+TRANSACTION_TYPE_TEXT = 'Calendar Month End Misc. On'
+TRANSACTION_CODE = 23
+NEW_COVERAGE_FLAG = NULL
 import boto3
 import findspark
 findspark.init()
